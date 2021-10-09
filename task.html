@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script> -->
+</head>
+<body>
+    <div id="projects"></div>
+    <script>
+      var myHeaders = new Headers();
+myHeaders.append("content-type", "application/json");
+myHeaders.append("freelancer-oauth-v1", "<oauth_access_token>");
+myHeaders.append("Authorization", "Bearer Access Token");
+
+var formdata = new FormData();
+formdata.append("title", "Fix my PHP website");
+formdata.append("description", "I wrote a small website in PHP but it does not work. I need someone to fix it.");
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("https://www.freelancer.com/api/projects/0.1/jobs/search/?currency_codes=AUD&hourly_details=Fixed&job_names=PHP&job_names=website%26design&compact&language=en")
+  .then(response => response.json())
+  .then(data => {
+      console.log(data);
+    data.result.forEach(result => {
+        const name = result.name;
+        const category = result.category.name;
+        const p = document.createElement('p');
+        p.innerText = name + " - " + category
+        document.querySelector('#projects').appendChild(p
+        );
+    });
+  })
+  .catch(error => console.log('error', error));
+    </script>
+</body>
+</html>
